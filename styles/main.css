@@ -1,3 +1,7 @@
 body {
   background-color: blanchedalmond;
 }
+
+.hide {
+  display: none;
+}
