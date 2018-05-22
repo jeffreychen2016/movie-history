@@ -40,11 +40,14 @@
   <div id="myMovies" class="hide">
     <h1>My Movies</h1>
   </div>
-  <div id="search" >
+  <div id="search" class="text-center col-md-6 col-md-offset-3">
     <h1>Search Movies</h1>
-    <input type="text">
-    <div id="movies"></div>
+    <div class="input-group input-group-lg text-center" id='input-search-movies'>
+        <span class="input-group-addon glyphicon glyphicon-search" id="basic-addon1"></span>
+        <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon1">
+    </div>
   </div>
+  <div id="movies"></div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="dist/app.js"></script>
