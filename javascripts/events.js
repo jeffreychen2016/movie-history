@@ -13,6 +13,9 @@ const myLinks = (e) => {
       $('#authScreen').addClass('hide');
       $('#myMovies').removeClass('hide');
       $('#search').addClass('hide');
+
+      getAllMoviesEvent();
+
     } else if (e.target.id === 'searchBtn') {
       $('#authScreen').addClass('hide');
       $('#myMovies').addClass('hide');
@@ -30,6 +33,9 @@ const pressEnter = () => {
   });
 };
 
+// get data from the card that being click
+// then build the object that will be passed into saveMoiveToWishlist
+// if successfully add the movie to database, then remove that movie
 const saveMovieToWishlistEvent = () => {
   $(document).on('click', '.addMovieToWishlist', (e) => {
     const movieToAddCard = $(e.target).closest('.movie');
@@ -41,7 +47,6 @@ const saveMovieToWishlistEvent = () => {
       isWatched: false,
     };
 
-    // if successfully add the movie to database, then remove that movie
     firebaseAPI.saveMoiveToWishlist(movieToAdd)
       .then(() => {
         movieToAddCard.remove();
@@ -50,6 +55,18 @@ const saveMovieToWishlistEvent = () => {
         console.error(err);
       });
   });
+};
+
+const getAllMoviesEvent = () => {
+  firebaseAPI.getAllMovies()
+    .then((moviesArray) => {
+      moviesArray.forEach((movie) => {
+        $('#savedMovies').append(movie.title);
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 const initializer = () => {
