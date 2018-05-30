@@ -2,6 +2,7 @@
 
 const tmdb = require('./tmdb');
 const firebaseAPI = require('./firebaseAPI');
+const dom = require('./dom');
 
 const myLinks = (e) => {
   $(document).click((e) => {
@@ -33,7 +34,7 @@ const pressEnter = () => {
   });
 };
 
-// get data from the card that being click
+// get data from the card that being clicked
 // then build the object that will be passed into saveMoiveToWishlist
 // if successfully add the movie to database, then remove that movie
 const saveMovieToWishlistEvent = () => {
@@ -60,9 +61,7 @@ const saveMovieToWishlistEvent = () => {
 const getAllMoviesEvent = () => {
   firebaseAPI.getAllMovies()
     .then((moviesArray) => {
-      moviesArray.forEach((movie) => {
-        $('#savedMovies').append(movie.title);
-      });
+      dom.domString(moviesArray,tmdb.getImageConfig(),'savedMovies');
     })
     .catch((err) => {
       console.error(err);
