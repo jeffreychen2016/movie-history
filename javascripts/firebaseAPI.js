@@ -1,5 +1,6 @@
 let firebaseConfig = {};
 
+// get databaseURL from API JSON file for posting data
 const setConfig = (fbConfig) => {
   firebaseConfig = fbConfig;
 };
