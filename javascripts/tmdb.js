@@ -20,6 +20,10 @@ const getConfig = () => {
     });
 };
 
+const getImageConfig = () => {
+  return imageConfig;
+};
+
 const tmdbConfiguration = () => {
   // PROMISE GOES HERE
   return new Promise((resolve,reject) => {
@@ -66,7 +70,7 @@ const showResults = (searchText) => {
   // dom.domString([singleMovie,singleMovie,singleMovie,singleMovie,]);
   searchTMDB(searchText)
     .then((result) => {
-      dom.domString(result.results,imageConfig);
+      dom.domString(result.results,imageConfig,'movies');
     })
     .catch((err) => {
       console.error('search error',err);
@@ -76,4 +80,5 @@ const showResults = (searchText) => {
 module.exports = {
   showResults,
   setKey,
+  getImageConfig,
 };
