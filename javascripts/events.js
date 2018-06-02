@@ -41,7 +41,7 @@ const saveMovieToWishlistEvent = () => {
   $(document).on('click', '.addMovieToWishlist', (e) => {
     const movieToAddCard = $(e.target).closest('.movie');
     const movieToAdd = {
-      title: movieToAddCard.find('.movie-title').text(),
+      original_title: movieToAddCard.find('.movie-title').text(),
       overview: movieToAddCard.find('.movie-overview').text(),
       poster_path: movieToAddCard.find('img').data('poster'),
       rating: 0,
@@ -61,7 +61,7 @@ const saveMovieToWishlistEvent = () => {
 const getAllMoviesEvent = () => {
   firebaseAPI.getAllMovies()
     .then((moviesArray) => {
-      dom.domString(moviesArray,tmdb.getImageConfig(),'savedMovies');
+      dom.domString(moviesArray,tmdb.getImageConfig(),'savedMovies',true);
     })
     .catch((err) => {
       console.error(err);
