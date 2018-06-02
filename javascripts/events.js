@@ -68,6 +68,26 @@ const getAllMoviesEvent = () => {
     });
 };
 
+const getWatchedMoviesEvent = () => {
+  firebaseAPI.getWatchedMovies()
+    .then((moviesArray) => {
+      dom.domString(moviesArray,tmdb.getImageConfig(),'savedMovies',true);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const getWishlistMoviesEvent = () => {
+  firebaseAPI.getWishlistMovies()
+    .then((moviesArray) => {
+      dom.domString(moviesArray,tmdb.getImageConfig(),'savedMovies',true);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 const deleteMovieFromFirebase = () => {
   $(document).on('click','.deleteMovieFromColeectionEvent', (e) => {
     const movieToDeleteId = $(e.target).closest('.movie').data('firebaseId');
@@ -103,12 +123,29 @@ const updateMovieEvent = () => {
   });
 };
 
+const filterEvents = () => {
+  $('#filterButtons').on('click',(e) => {
+    const classList = e.target.classList;
+    if (classList.contains('wishlist')) {
+      // show only if isWatched: false
+      getWishlistMoviesEvent();
+    } else if (classList.contains('watched')) {
+      // show only if isWatched: true
+      getWatchedMoviesEvent();
+    } else {
+      // show everything
+      getAllMoviesEvent();
+    };
+  });
+};
+
 const initializer = () => {
   myLinks();
   pressEnter();
   saveMovieToWishlistEvent();
   deleteMovieFromFirebase();
   updateMovieEvent();
+  filterEvents();
 };
 
 module.exports = {

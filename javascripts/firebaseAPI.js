@@ -84,10 +84,56 @@ const updateMovieToWatchedInDB = (updatedMovie,movieId) => {
   });
 };
 
+const getWatchedMovies = () => {
+  return new Promise((resolve,reject) => {
+    const allMoviesArray = [];
+    $.ajax({
+      method: 'GET',
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=true`,
+    })
+      .done((allMoviesObj) => {
+        if (allMoviesObj !== null) {
+          Object.keys(allMoviesObj).forEach((fbKey) => {
+            allMoviesObj[fbKey].id = fbKey;
+            allMoviesArray.push(allMoviesObj[fbKey]);
+          });
+        };
+        resolve(allMoviesArray);
+      })
+      .fail((err) => {
+        reject(err);
+      });
+  });
+};
+
+const getWishlistMovies = () => {
+  return new Promise((resolve,reject) => {
+    const allMoviesArray = [];
+    $.ajax({
+      method: 'GET',
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=false`,
+    })
+      .done((allMoviesObj) => {
+        if (allMoviesObj !== null) {
+          Object.keys(allMoviesObj).forEach((fbKey) => {
+            allMoviesObj[fbKey].id = fbKey;
+            allMoviesArray.push(allMoviesObj[fbKey]);
+          });
+        };
+        resolve(allMoviesArray);
+      })
+      .fail((err) => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = {
   saveMoiveToWishlist,
   setConfig,
   getAllMovies,
   deleteMovieFromDB,
   updateMovieToWatchedInDB,
+  getWatchedMovies,
+  getWishlistMovies,
 };
