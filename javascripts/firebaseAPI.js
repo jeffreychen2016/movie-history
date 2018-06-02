@@ -50,6 +50,7 @@ const getAllMovies = () => {
   });
 };
 
+// DELETE
 const deleteMovieFromDB = (movieId) => {
   return new Promise((resolve,reject) => {
     $.ajax({
@@ -65,9 +66,28 @@ const deleteMovieFromDB = (movieId) => {
   });
 };
 
+// UPDATE
+const updateMovieToWatchedInDB = (updatedMovie,movieId) => {
+  return new Promise((resolve,reject) => {
+    $.ajax({
+      method: 'PUT',
+      url: `${firebaseConfig.databaseURL}/movies/${movieId}.json`,
+      data: JSON.stringify(updatedMovie),
+    })
+    // not acutally using the result that returns from DB
+      .done((modifedMovie) => {
+        resolve(modifedMovie);
+      })
+      .fail((err) => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = {
   saveMoiveToWishlist,
   setConfig,
   getAllMovies,
   deleteMovieFromDB,
+  updateMovieToWatchedInDB,
 };
