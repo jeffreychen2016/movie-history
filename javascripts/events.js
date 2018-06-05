@@ -152,7 +152,7 @@ const authEvents = () => {
     firebase.auth().signInWithEmailAndPassword(email, pass)
       // not using returned user object
       // do not need .then here since it is managed by the auth state changing
-      // in checkLoginStatus
+      // in checkLoginStatus *******
 
       // .then((user) => {
       //   $('#authScreen').addClass('hide');
@@ -167,6 +167,21 @@ const authEvents = () => {
         console.error(errorMessage);
         // ...
       });
+  });
+
+  // Registration
+  // firebase will automatically log in after a new account is created
+  // the changeState function is taking care of the .then()
+  $('#register-btn').click(() => {
+    const email = $('#registerEmail').val();
+    const pass = $('#registerPassword').val();
+    firebase.auth().createUserWithEmailAndPassword(email, pass).catch((error) => {
+      // Handle Errors here.
+      // var errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorMessage);
+      // ...
+    });
   });
 
   // switch to registration page
@@ -185,7 +200,8 @@ const authEvents = () => {
   $('#logoutBtn').click((e) => {
     firebase.auth().signOut().then(() => {
     // Sign-out successful.
-    // move this code to auth module
+    // move this code to auth module -------
+
     }).catch((error) => {
       console.error(error);
     });
