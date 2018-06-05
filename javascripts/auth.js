@@ -9,6 +9,7 @@ const checkLoginStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // User is signed in.
+      // move it from log in event *******
       $('#myMoviesBtn,#searchBtn,#logoutBtn').removeClass('hide');
       $('#authBtn').addClass('hide');
 
@@ -18,7 +19,7 @@ const checkLoginStatus = () => {
       getAllMoviesEvent();
     } else {
       // No user is signed in.
-      // move it from log out event
+      // move it from log out event ------
       $('#logoutBtn,#myMoviesBtn,#searchBtn').addClass('hide');
       $('#authBtn').removeClass('hide');
 
