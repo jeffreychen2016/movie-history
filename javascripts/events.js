@@ -151,12 +151,15 @@ const authEvents = () => {
     // firebase will return a promise
     firebase.auth().signInWithEmailAndPassword(email, pass)
       // not using returned user object
-      .then((user) => {
-        $('#authScreen').addClass('hide');
-        $('#myMovies').removeClass('hide');
-        $('#search').addClass('hide');
-        getAllMoviesEvent();
-      })
+      // do not need .then here since it is managed by the auth state changing
+      // in checkLoginStatus
+
+      // .then((user) => {
+      //   $('#authScreen').addClass('hide');
+      //   $('#myMovies').removeClass('hide');
+      //   $('#search').addClass('hide');
+      //   getAllMoviesEvent();
+      // })
       .catch((error) => {
         // Handle Errors here.
         // var errorCode = error.code;
@@ -166,14 +169,26 @@ const authEvents = () => {
       });
   });
 
+  // switch to registration page
   $('#register-link').click((e) => {
     $('#login-form').addClass('hide');
     $('#registration-form').removeClass('hide');
   });
 
+  // switch to log in page
   $('#signin-link').click((e) => {
     $('#login-form').removeClass('hide');
     $('#registration-form').addClass('hide');
+  });
+
+  // log out
+  $('#logoutBtn').click((e) => {
+    firebase.auth().signOut().then(() => {
+    // Sign-out successful.
+    // move this code to auth module
+    }).catch((error) => {
+      console.error(error);
+    });
   });
 };
 
@@ -189,4 +204,5 @@ const initializer = () => {
 
 module.exports = {
   initializer,
+  getAllMoviesEvent,
 };
