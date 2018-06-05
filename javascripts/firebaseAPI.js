@@ -84,6 +84,8 @@ const updateMovieToWatchedInDB = (updatedMovie,movieId) => {
   });
 };
 
+// Filter
+// Query: where clause
 const getWatchedMovies = () => {
   return new Promise((resolve,reject) => {
     const allMoviesArray = [];
