@@ -5,11 +5,16 @@ const setConfig = (fbConfig) => {
   firebaseConfig = fbConfig;
 };
 
+// newMoive.uid = uid; for functions that post and update database
+// orderBy="uid"&equalTo="${uid}" to functions that retrive data from databse to narrow down the result
+
 // POST
 // newMovie: get the movie info that needs to add to the database
 // then post the data to database
 // then database return the unique key for data that are posted
 const saveMoiveToWishlist = (newMoive) => {
+  newMoive.uid = uid;
+
   return new Promise((resolve,reject) => {
     $.ajax({
       method: 'POST',
@@ -33,7 +38,7 @@ const getAllMovies = () => {
     const allMoviesArray = [];
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/movies.json`,
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="uid"&equalTo="${uid}"`,
     })
       .done((allMoviesObj) => {
         if (allMoviesObj !== null) {
@@ -68,6 +73,9 @@ const deleteMovieFromDB = (movieId) => {
 
 // UPDATE
 const updateMovieToWatchedInDB = (updatedMovie,movieId) => {
+  // add user id key to the updatedMovie object
+  updatedMovie.uid = uid;
+
   return new Promise((resolve,reject) => {
     $.ajax({
       method: 'PUT',
@@ -91,13 +99,16 @@ const getWatchedMovies = () => {
     const allMoviesArray = [];
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=true`,
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="uid"&equalTo="${uid}"`,
     })
       .done((allMoviesObj) => {
         if (allMoviesObj !== null) {
           Object.keys(allMoviesObj).forEach((fbKey) => {
-            allMoviesObj[fbKey].id = fbKey;
-            allMoviesArray.push(allMoviesObj[fbKey]);
+            // filter for watched movies
+            if (allMoviesObj[fbKey].isWatched) {
+              allMoviesObj[fbKey].id = fbKey;
+              allMoviesArray.push(allMoviesObj[fbKey]);
+            };
           });
         };
         resolve(allMoviesArray);
@@ -113,13 +124,15 @@ const getWishlistMovies = () => {
     const allMoviesArray = [];
     $.ajax({
       method: 'GET',
-      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=false`,
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="uid"&equalTo="${uid}"`,
     })
       .done((allMoviesObj) => {
         if (allMoviesObj !== null) {
           Object.keys(allMoviesObj).forEach((fbKey) => {
-            allMoviesObj[fbKey].id = fbKey;
-            allMoviesArray.push(allMoviesObj[fbKey]);
+            if (!allMoviesObj[fbKey].isWatched) {
+              allMoviesObj[fbKey].id = fbKey;
+              allMoviesArray.push(allMoviesObj[fbKey]);
+            };
           });
         };
         resolve(allMoviesArray);
@@ -130,6 +143,13 @@ const getWishlistMovies = () => {
   });
 };
 
+/* Link data to user */
+let uid = '';
+
+const setUID = (newUID) => {
+  uid = newUID;
+};
+
 module.exports = {
   saveMoiveToWishlist,
   setConfig,
@@ -138,4 +158,5 @@ module.exports = {
   updateMovieToWatchedInDB,
   getWatchedMovies,
   getWishlistMovies,
+  setUID,
 };
