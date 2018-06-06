@@ -4,10 +4,15 @@
 // example of bringing in multi functions {function1, function2} = require('./');
 const {getAllMoviesEvent,} = require('./events');
 
+/* Link data to user */
+const {setUID,} = require('./firebaseAPI');
+
 // monitor state change
 const checkLoginStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+      // set the user id right after user log in ************
+      setUID(user.uid);
       // User is signed in.
       // move it from log in event *******
       $('#myMoviesBtn,#searchBtn,#logoutBtn').removeClass('hide');
